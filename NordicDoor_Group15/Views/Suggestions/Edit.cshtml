@@ -1,0 +1,120 @@
+﻿@model NordicDoor_Group15.Models.Suggestion
+@using Microsoft.AspNetCore.Identity
+@using NordicDoor_Group15.Areas.Identity.Data
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@{
+    ViewData["Title"] = "Edit Suggestion";
+}
+
+
+<h2>Edit Suggestion</h2>
+
+
+<hr />
+@{
+    var hasPicture = (Model.SuggestionPhoto?.Content != null);
+    if (hasPicture)
+        {
+            @:<div>
+                string imageBase64 = Convert.ToBase64String(Model.SuggestionPhoto.Content);
+                string imageSrc = string.Format("data:" + Model.SuggestionPhoto.MimeType + ";base64,{0}", imageBase64);
+                <img src="@imageSrc" alt="Picture of Suggestion @Model.Id" title="Picture of Suggestion @Model.Id" class="img-fluid rounded" />
+            @:</div><hr />
+        }
+    }
+<div class="row">
+    <div class="col-md-10">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+        <div>
+        @{
+            if (hasPicture)
+            {
+                <div class="row">
+                    <div class="form-check m-3">
+                        <input class="form-check-input" type="checkbox" id="chkRemoveImage" name="chkRemoveImage">
+                        <label class="form-check-label" for="chkRemoveImage">
+                        <strong>Check to remove Image</strong>
+                        </label>
+                    </div>
+                </div>
+            }
+        }
+        </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control" row="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MainBody" class="control-label"></label>
+                <textarea asp-for="MainBody" class="form-control" row="15"></textarea>
+                <span asp-validation-for="MainBody" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TeamID" class="control-label"></label>
+                <select asp-for="TeamID" class="form-control" asp-items="ViewBag.TeamID">
+                    <option value="">Select a team</option>
+                </select>
+                <span asp-validation-for="TeamID" class="text-danger"></span>
+            </div>
+         
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" readonly />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <td>
+                <div class="form-group">
+                    <label asp-for="Status" class="control-label">Status (Choose One)</label>
+                    <select asp-for="Status" class="form-control" id="Status">
+                        <option>Just Do IT!</option>
+                        <option>Plan</option>
+                        <option>Do</option>
+                        <option>Study</option>
+                        <option>Act</option>
+                        <option>Completed</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+            </td>
+            <div class="form-group">
+                <label asp-for="Category" class="control-label"></label>
+                <input asp-for="Category" class="form-control" />
+                <span asp-validation-for="Category" class="text-danger"></span>
+            </div>
+       
+            <br />
+            <div class="form-group">
+                    <label class="control-label custom-file-label">Picture File:</label>
+                    <div class="input-group mb-3">
+                      <input type="file" class="form-control" name="thePicture" id="thePicture">
+                    </div>
+                </div>
+                <br />
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<div>
+    <a href='@ViewData["returnURL"]'>Back to Suggestion List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
+

@@ -1,0 +1,146 @@
+﻿@model IEnumerable<NordicDoor_Group15.Models.Suggestion>
+
+@{
+    ViewData["Title"] = "Suggestions Index";
+}
+
+<h1>Suggestions</h1>
+<br />
+
+<div class="row">
+    <div class="col-sm-3">
+        <p>
+            <a asp-action="Create" class="btn btn-primary col-sm-12">Create New</a>
+        </p>
+
+    </div>
+</div>
+<form asp-action="Index" method="get">
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+    <div class="form-horizontal">
+        <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+            Filter/Search
+        </button>
+        <div class="collapse @(ViewData["Filtering"])" id="collapseFilter">
+            <div class="card card-body bg-light">
+                <div class="row">
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Select by Team:</label>
+                        @Html.DropDownList("TeamID", null, "All Teams", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label class="control-label">Filter by Creator:</label>
+                        @Html.DropDownList("CreatorID", null, "None", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label class="control-label">Search Suggestion:</label>
+                        @Html.TextBox("SearchString", null, new { @class = "form-control" })
+                    </div>
+                    <div class="form-group col-md-4 align-self-end">
+                        <input type="submit" name="actionButton" value="Filter" class="btn btn-outline-primary" />
+                        <a asp-action="Index" class="btn btn-outline-dark">Clear</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <table class="table">
+        <thead>
+        <thead>
+            <tr>
+                <th>
+                    <input type="submit" disabled="disabled" value="Preview" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" name="actionButton" value="Title" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" disabled="disabled" value="Description" class="btn btn-link" />
+                </th>
+
+                <th>
+                    <input type="submit" name="actionButton" value="Team" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" disabled="disabled" value="Creator" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" name="actionButton" value="StartDate" class="btn btn-link" />
+                </th>               
+                <th>
+                    <input type="submit" name="actionButton" value="Status" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" name="actionButton" value="Category" class="btn btn-link" />
+                </th>
+                <th>
+                    <input type="submit" disabled="disabled" value="Action" class="btn btn-link" />
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                            @{
+                                if (item.SuggestionThumbnail?.Content != null)
+                                {
+                                    string imageBase64 = Convert.ToBase64String(item.SuggestionThumbnail.Content);
+                                    string imageSrc = string.Format("data:" + item.SuggestionThumbnail.MimeType + ";base64,{0}", imageBase64);
+                                <img src="@imageSrc" alt="Picture of Suggestion @item.Id" title="Picture of Suggestion @item.Id" class="img-fluid rounded" />
+                                }
+                            }
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.Team.FullName)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.Creator.FullName)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+             
+                    <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                        <br/>
+                        <a asp-controller="Photos" asp-action="Create">Add Photo</a>
+                    </td>
+                </tr>
+                }
+        </tbody>
+    </table>
+    <partial name="_PagingNavBar" /> @*reduce code dublication, render view in shared folders*@
+</form>
+@*Tag Helpers enable server-side code to participate in creating and rendering HTML elements in Razor files.
+            In the code above, the AnchorTagHelper dynamically generates the HTML href attribute value from the controller action method and route id.*@
+
+
+
+
+
+
+

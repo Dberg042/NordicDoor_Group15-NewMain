@@ -1,0 +1,67 @@
+﻿@model NordicDoor_Group15.Models.Team
+
+@{
+    ViewData["Title"] = "Delete Team";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Delete Team</h1>
+
+<h3>Are you sure you want to delete @Model.FullName?</h3>
+<div>
+    <h4>Team</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TeamNumber)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TeamNumber)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TeamName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.TeamName)
+        </dd>
+    
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Memberships)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                int userCount = Model.Memberships.Count;
+                if (userCount > 0)
+                {
+                    string firstCond = Model.Memberships.FirstOrDefault().User.FullName;
+                    if (userCount > 1)
+                    {
+                        string userList = "";
+                        var c = Model.Memberships.ToList();
+                        for (int i = 1; i < userCount; i++)//Skip the first because we have it already
+                        {
+                            userList += c[i].User.FullName + " <br />";
+                        }
+                        <a class="" role="button" data-bs-toggle="collapse" href="#collapseUser@(Model.ID)"
+                   aria-expanded="false" aria-controls="collapseUser@(Model.ID)">
+                            @firstCond <span class="badge bg-info">@userCount</span>
+                        </a>
+                        <div class="collapse" id="collapseUser@(Model.ID)">
+                            @Html.Raw(userList)
+                        </div>
+                    }
+                    else
+                    {
+                        @firstCond
+                    }
+                }
+            }
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="ID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to Docktor List</a>
+    </form>
+</div>

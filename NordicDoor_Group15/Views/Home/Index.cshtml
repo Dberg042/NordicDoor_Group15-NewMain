@@ -1,0 +1,26 @@
+﻿@*@using Microsoft.AspNetCore.Identity
+@using NordicDoor_Group15.Areas.Identity.Data*@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    @*<h1 class="display-4">Welcome</h1>*@
+    <img src="~/nordicdoor_hovedlogo.png" width="297" height="28" />
+  <br />
+    <br />
+    <h4>
+        Welcome back the Nordicdoor’s 
+        <br />
+        Suggestion and Improvements Platform
+    </h4>
+    <img src="~/wavy_bus-30_single-06.jpg" alt="Working for Ideas Photo" width="500" height="500" />
+    <p>Please Login or Register to contribute to NordicDoor
+    </p>
+    <div>
+    <a class="btn btn-primary" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    <a class="btn btn-primary" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </div>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+</div>
